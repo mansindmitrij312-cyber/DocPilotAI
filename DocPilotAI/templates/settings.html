@@ -1,0 +1,126 @@
+{% extends "base.html" %}
+
+{% block title %}Настройки | DocPilot AI{% endblock %}
+
+{% block body %}
+
+<div class="page">
+
+{% include "_nav.html" %}
+
+<div class="shell" style="max-width:640px;">
+
+<div class="animate mt-40" style="margin-top:50px;margin-bottom:34px;">
+<div class="eyebrow mb-8">Аккаунт</div>
+<h1 style="font-size:38px;">Настройки</h1>
+</div>
+
+{% if success %}
+<div class="alert alert-success animate">{{ success }}</div>
+{% endif %}
+
+{% if error %}
+<div class="alert alert-error animate">{{ error }}</div>
+{% endif %}
+
+<div class="panel animate mb-24">
+
+<h2 style="font-size:19px;margin-bottom:6px;">Подписка</h2>
+<p class="muted mb-24" style="font-size:14px;">
+{{ 'Тариф Pro — безлимитные генерации' if usage.is_pro else 'Бесплатный тариф — использовано ' ~ usage.used ~ ' из ' ~ usage.limit }}
+</p>
+
+{% if not usage.is_pro %}
+<a class="btn btn-primary btn-sm" href="/pro">✨ Перейти на Pro</a>
+{% endif %}
+
+</div>
+
+<div class="panel animate mb-24">
+
+<h2 style="font-size:19px;margin-bottom:6px;">Реферальная ссылка</h2>
+<p class="muted mb-24" style="font-size:14px;">Приглашайте друга — вы оба получите по 5 бонусных генераций при его регистрации.</p>
+
+<div class="field">
+<label>Ваша ссылка</label>
+<div class="flex gap-10">
+<input class="input" type="text" id="refLink" value="{{ request.host_url }}register?ref={{ referral.code }}" readonly style="font-family:var(--font-mono);font-size:13px;">
+<button class="btn btn-ghost btn-sm" type="button" id="copyRefBtn">📋</button>
+</div>
+</div>
+
+<p class="muted" style="font-size:13px;">Приглашено: <span style="color:var(--purple-bright);font-weight:600;">{{ referral.invited_count }}</span> человек. Бонусных генераций получено: <span style="color:var(--purple-bright);font-weight:600;">{{ referral.bonus_generations }}</span></p>
+
+</div>
+
+<div class="panel animate mb-24">
+
+<h2 style="font-size:19px;margin-bottom:6px;">Профиль</h2>
+<p class="muted mb-24" style="font-size:14px;">{{ email }}</p>
+
+<form method="POST" action="/settings/profile">
+
+<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+<div class="field">
+<label>Имя</label>
+<input class="input" type="text" name="username" value="{{ user }}" required minlength="2">
+</div>
+
+<button class="btn btn-primary" type="submit">Сохранить имя</button>
+
+</form>
+
+</div>
+
+<div class="panel animate">
+
+<h2 style="font-size:19px;margin-bottom:6px;">Смена пароля</h2>
+<p class="muted mb-24" style="font-size:14px;">Введите текущий пароль, чтобы задать новый.</p>
+
+<form method="POST" action="/settings/password">
+
+<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+<div class="field">
+<label>Текущий пароль</label>
+<input class="input" type="password" name="current_password" required>
+</div>
+
+<div class="field">
+<label>Новый пароль</label>
+<input class="input" type="password" name="new_password" minlength="6" required>
+</div>
+
+<div class="field">
+<label>Повторите новый пароль</label>
+<input class="input" type="password" name="new_password_confirm" minlength="6" required>
+</div>
+
+<button class="btn btn-primary" type="submit">Обновить пароль</button>
+
+</form>
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+var copyRefBtn = document.getElementById("copyRefBtn");
+
+if (copyRefBtn) {
+    copyRefBtn.addEventListener("click", function(){
+        var input = document.getElementById("refLink");
+        navigator.clipboard.writeText(input.value).then(function(){
+            copyRefBtn.textContent = "✓";
+            setTimeout(function(){ copyRefBtn.textContent = "📋"; }, 1800);
+        });
+    });
+}
+</script>
+{% endblock %}

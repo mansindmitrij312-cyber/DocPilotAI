@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block title %}Мои документы | DocPilot AI{% endblock %}
+
+{% block body %}
+
+<div class="page">
+
+{% include "_nav.html" %}
+
+<div class="shell">
+
+<div class="flex-between animate mt-40" style="margin-top:50px;margin-bottom:34px;">
+<div>
+<div class="eyebrow mb-8">Архив</div>
+<h1 style="font-size:38px;">Мои документы</h1>
+</div>
+<a class="btn btn-primary btn-sm" href="/create">+ Новый документ</a>
+</div>
+
+{% if documents %}
+
+<div class="field animate" style="max-width:360px;">
+<input class="input" type="text" id="docSearch" placeholder="🔍 Поиск по документам...">
+</div>
+
+<div class="grid grid-2 animate">
+
+{% for doc in documents %}
+
+<div class="card doc-item" data-search="{{ (doc[1] ~ ' ' ~ doc[2]) | lower }}">
+<div class="badge badge-gold mb-16">Документ №{{ doc[4] }}</div>
+<h2>{{ doc[1] }}</h2>
+<p style="max-height:100px;overflow:hidden;">{{ doc[2] }}</p>
+<div class="flex-between">
+<span class="faint mono" style="font-size:12px;">{{ doc[3] | format_date }}</span>
+<div class="flex gap-10">
+<a class="btn btn-ghost btn-sm" href="/document/{{ doc[0] }}">Открыть →</a>
+<form method="POST" action="/document/{{ doc[0] }}/delete" style="display:inline;" onsubmit="return confirm('Удалить документ №{{ doc[4] }}?');">
+<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+<button class="btn btn-danger btn-sm" type="submit" title="Удалить">🗑</button>
+</form>
+</div>
+</div>
+</div>
+
+{% endfor %}
+
+</div>
+
+<div class="empty-state" id="noResults" style="display:none;">
+<span class="glyph">🔍</span>
+<p>Ничего не найдено по этому запросу.</p>
+</div>
+
+{% else %}
+
+<div class="empty-state animate">
+<span class="glyph">🗂</span>
+<p>У вас пока нет созданных документов.</p>
+<a class="btn btn-primary mt-24" href="/create">Создать первый документ</a>
+</div>
+
+{% endif %}
+
+</div>
+
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+var searchInput = document.getElementById("docSearch");
+
+if (searchInput) {
+    searchInput.addEventListener("input", function(){
+        var q = this.value.trim().toLowerCase();
+        var items = document.querySelectorAll(".doc-item");
+        var visibleCount = 0;
+
+        items.forEach(function(item){
+            var match = item.dataset.search.indexOf(q) !== -1;
+            item.style.display = match ? "" : "none";
+            if (match) visibleCount++;
+        });
+
+        var noResults = document.getElementById("noResults");
+        if (noResults) {
+            noResults.style.display = (visibleCount === 0 && q.length > 0) ? "block" : "none";
+        }
+    });
+}
+</script>
+{% endblock %}

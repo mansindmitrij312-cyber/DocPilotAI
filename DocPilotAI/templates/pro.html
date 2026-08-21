@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+
+{% block title %}DocPilot AI Pro{% endblock %}
+
+{% block scripts %}
+<script>
+var openBtn = document.getElementById("openRefModal");
+var closeBtn = document.getElementById("closeRefModal");
+var modal = document.getElementById("refModal");
+var copyBtn = document.getElementById("copyProRefBtn");
+
+if (openBtn && modal) {
+    openBtn.addEventListener("click", function(){
+        modal.classList.add("active");
+    });
+}
+
+if (closeBtn && modal) {
+    closeBtn.addEventListener("click", function(){
+        modal.classList.remove("active");
+    });
+
+    modal.addEventListener("click", function(e){
+        if (e.target === modal) {
+            modal.classList.remove("active");
+        }
+    });
+}
+
+if (copyBtn) {
+    copyBtn.addEventListener("click", function(){
+        var input = document.getElementById("proRefLink");
+        navigator.clipboard.writeText(input.value).then(function(){
+            copyBtn.textContent = "✓";
+            setTimeout(function(){ copyBtn.textContent = "📋"; }, 1800);
+        });
+    });
+}
+</script>
+{% endblock %}
+
+{% block body %}
+
+<div class="page">
+
+{% include "_nav.html" %}
+
+<div class="shell" style="max-width:720px;">
+
+<div class="animate mt-40" style="margin-top:70px;text-align:center;">
+
+<div class="eyebrow" style="justify-content:center;">Скоро</div>
+
+<h1 class="glow-text" style="font-size:48px;margin-top:18px;">DocPilot AI Pro</h1>
+
+<p class="muted" style="font-size:18px;margin-top:16px;line-height:1.6;">
+Безлимитные генерации документов, приоритетная скорость и расширенные шаблоны.
+Оплата пока не подключена — подписки в разработке.
+</p>
+
+</div>
+
+<div class="panel animate mt-40" style="margin-top:50px;">
+
+<h2 style="font-size:20px;margin-bottom:20px;">Что войдёт в Pro</h2>
+
+<div class="grid grid-2">
+
+<div class="flex gap-14" style="align-items:flex-start;">
+<span style="font-size:20px;">♾️</span>
+<div>
+<strong>Безлимитные генерации</strong>
+<p class="muted" style="font-size:14px;margin-top:4px;">Без ограничения в 5 документов на бесплатном тарифе</p>
+</div>
+</div>
+
+<div class="flex gap-14" style="align-items:flex-start;">
+<span style="font-size:20px;">⚡</span>
+<div>
+<strong>Приоритетная генерация</strong>
+<p class="muted" style="font-size:14px;margin-top:4px;">Ваши запросы обрабатываются в первую очередь</p>
+</div>
+</div>
+
+<div class="flex gap-14" style="align-items:flex-start;">
+<span style="font-size:20px;">📁</span>
+<div>
+<strong>Больше типов документов</strong>
+<p class="muted" style="font-size:14px;margin-top:4px;">Расширенная библиотека шаблонов</p>
+</div>
+</div>
+
+<div class="flex gap-14" style="align-items:flex-start;">
+<span style="font-size:20px;">🎯</span>
+<div>
+<strong>Без водяных знаков</strong>
+<p class="muted" style="font-size:14px;margin-top:4px;">Чистый PDF, готовый к отправке</p>
+</div>
+</div>
+
+</div>
+
+</div>
+
+<div class="panel animate mt-24 center" style="margin-top:24px;margin-bottom:80px;">
+<p class="muted mb-16">А пока — получайте бесплатные генерации за приглашение друзей</p>
+{% if user %}
+<button class="btn btn-primary" type="button" id="openRefModal">Получить реферальную ссылку</button>
+{% else %}
+<a class="btn btn-primary" href="/register">Создать аккаунт</a>
+{% endif %}
+</div>
+
+</div>
+
+</div>
+
+{% if user and referral %}
+<div class="modal-overlay" id="refModal">
+<div class="modal-box">
+<button class="modal-close" type="button" id="closeRefModal">✕</button>
+
+<div class="eyebrow mb-16">Реферальная ссылка</div>
+<h2 style="font-size:22px;margin-bottom:10px;">Пригласите друга</h2>
+<p class="muted mb-24" style="font-size:14px;">За каждую регистрацию по вашей ссылке вы получаете +5 генераций.</p>
+
+<div class="field">
+<div class="flex gap-10">
+<input class="input" type="text" id="proRefLink" value="{{ request.host_url }}register?ref={{ referral.code }}" readonly style="font-family:var(--font-mono);font-size:13px;">
+<button class="btn btn-ghost btn-sm" type="button" id="copyProRefBtn">📋</button>
+</div>
+</div>
+
+<p class="muted" style="font-size:13px;">Приглашено: <span style="color:var(--purple-bright);font-weight:600;">{{ referral.invited_count }}</span> человек</p>
+
+</div>
+</div>
+{% endif %}
+
+{% endblock %}

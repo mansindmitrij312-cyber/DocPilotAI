@@ -1,0 +1,26 @@
+<div class="nav">
+
+<a class="nav-logo" href="{{ '/dashboard' if user else '/' }}">
+<span class="mark">P</span>
+DocPilot AI
+</a>
+
+<div class="nav-right">
+
+{% if user %}
+
+<span class="nav-user">👋 {{ user }}</span>
+<a class="btn btn-ghost btn-sm" href="/dashboard">Кабинет</a>
+<a class="btn btn-ghost btn-sm" href="/pro">✨ Pro</a>
+<a class="btn btn-dark btn-sm" href="/logout">Выйти</a>
+
+{% else %}
+
+<a class="btn btn-ghost btn-sm" href="/login">Войти</a>
+<a class="btn btn-primary btn-sm" href="/register">Регистрация</a>
+
+{% endif %}
+
+</div>
+
+</div>

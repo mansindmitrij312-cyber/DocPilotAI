@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}Вход | DocPilot AI{% endblock %}
+
+{% block body %}
+
+<div class="page">
+
+{% include "_nav.html" %}
+
+<div class="auth-page animate">
+
+<div class="auth-card">
+
+<div class="eyebrow mb-16">Вход в аккаунт</div>
+
+<h1>С возвращением</h1>
+<p class="auth-sub">Войдите, чтобы продолжить работу с документами.</p>
+
+{% if error %}
+<div class="alert alert-error">{{ error }}</div>
+{% endif %}
+
+<form method="POST">
+
+<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+<div class="field">
+<label>Email</label>
+<input class="input" type="email" name="email" placeholder="you@mail.com" required autofocus>
+</div>
+
+<div class="field">
+<label>Пароль</label>
+<input class="input" type="password" name="password" placeholder="••••••••" required>
+</div>
+
+<button class="btn btn-primary btn-block" type="submit">Войти</button>
+
+</form>
+
+<div class="auth-bottom">
+<a href="/forgot-password">Забыли пароль?</a>
+<span>Нет аккаунта? <a href="/register">Создать аккаунт</a></span>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}

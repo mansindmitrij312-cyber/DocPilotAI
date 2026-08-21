@@ -1,0 +1,108 @@
+{% extends "base.html" %}
+
+{% block title %}{{ title }} | DocPilot AI{% endblock %}
+
+{% block body %}
+
+<div class="page">
+
+{% include "_nav.html" %}
+
+<div class="shell" style="max-width:920px;">
+
+<div class="flex-between animate mt-40" style="margin-top:50px;margin-bottom:34px;">
+<div class="eyebrow mb-8">Готовый документ</div>
+<a class="btn btn-ghost btn-sm" href="/documents">🗂 Все документы</a>
+</div>
+
+<div class="doc-card animate">
+
+<div class="stamp mb-24">✓ Готово</div>
+
+<div class="doc-title">{{ title }}</div>
+
+<div class="doc-meta">
+
+<div class="doc-meta-item">
+<div class="meta-label">Документ №</div>
+<div class="meta-value">{{ doc_number }}</div>
+</div>
+
+<div class="doc-meta-item">
+<div class="meta-label">Тип</div>
+<div class="meta-value">{{ title }}</div>
+</div>
+
+<div class="doc-meta-item">
+<div class="meta-label">Дата</div>
+<div class="meta-value">{{ created_at }}</div>
+</div>
+
+<div class="doc-meta-item">
+<div class="meta-label">Статус</div>
+<div class="meta-value" style="color:var(--success);">Оформлен</div>
+</div>
+
+</div>
+
+<div class="doc-content" id="docContentView">{{ content }}</div>
+
+<form method="POST" action="/document/{{ document_id }}/edit" id="editForm" style="display:none;margin-top:10px;">
+<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+<textarea class="input" name="content" id="editTextarea" style="min-height:320px;">{{ content }}</textarea>
+<div class="flex gap-14 mt-16">
+<button class="btn btn-primary btn-sm" type="submit">💾 Сохранить изменения</button>
+<button class="btn btn-ghost btn-sm" type="button" id="cancelEdit">Отмена</button>
+</div>
+</form>
+
+</div>
+
+<div class="flex gap-14 mt-24" style="flex-wrap:wrap;">
+<a class="btn btn-primary" href="/download/{{ document_id }}">📥 Скачать PDF</a>
+<button class="btn btn-ghost" type="button" id="copyBtn">📋 Скопировать текст</button>
+<button class="btn btn-ghost" type="button" id="editBtn">✏️ Редактировать</button>
+<a class="btn btn-dark" href="/create">➕ Новый документ</a>
+<button class="btn btn-danger" type="button" id="deleteBtn">🗑 Удалить</button>
+</div>
+
+<form method="POST" action="/document/{{ document_id }}/delete" id="deleteForm" style="display:none;">
+<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+</form>
+
+</div>
+
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.getElementById("copyBtn").addEventListener("click", function(){
+    var text = document.getElementById("docContentView").textContent;
+    var btn = this;
+    navigator.clipboard.writeText(text).then(function(){
+        btn.textContent = "✓ Скопировано";
+        setTimeout(function(){ btn.textContent = "📋 Скопировать текст"; }, 1800);
+    });
+});
+
+document.getElementById("editBtn").addEventListener("click", function(){
+    document.getElementById("docContentView").style.display = "none";
+    document.getElementById("editForm").style.display = "block";
+    this.style.display = "none";
+});
+
+document.getElementById("cancelEdit").addEventListener("click", function(){
+    document.getElementById("editForm").style.display = "none";
+    document.getElementById("docContentView").style.display = "block";
+    document.getElementById("editBtn").style.display = "inline-flex";
+});
+
+document.getElementById("deleteBtn").addEventListener("click", function(){
+    if(confirm("Удалить этот документ без возможности восстановления?")){
+        document.getElementById("deleteForm").submit();
+    }
+});
+</script>
+{% endblock %}

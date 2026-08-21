@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+
+{% block title %}Создать документ | DocPilot AI{% endblock %}
+
+{% block body %}
+
+<div class="page">
+
+{% include "_nav.html" %}
+
+<div class="shell">
+
+<div class="flex-between animate mt-40" style="margin-top:50px;margin-bottom:34px;">
+<div>
+<div class="eyebrow mb-8">Новый документ</div>
+<h1 style="font-size:38px;">Создание документа</h1>
+</div>
+<a class="btn btn-ghost btn-sm" href="/dashboard">← Кабинет</a>
+</div>
+
+{% if error %}
+<div class="alert alert-error animate">{{ error }}</div>
+{% endif %}
+
+{% if not usage.is_pro %}
+<div class="badge {{ 'badge-gold' if usage.remaining > 0 else '' }} mb-24 animate" style="{{ '' if usage.remaining > 0 else 'border-color:var(--danger-border);color:var(--danger);background:var(--danger-bg);' }}">
+Осталось генераций: {{ usage.remaining }} из {{ usage.limit }}
+</div>
+{% endif %}
+
+{% if usage and not usage.is_pro and usage.remaining == 0 %}
+
+<div class="panel animate" style="max-width:760px;">
+<h2 style="font-size:20px;margin-bottom:10px;">Бесплатные генерации закончились</h2>
+<p class="muted mb-24">Оформите Pro для безлимитных генераций, либо пригласите друга по реферальной ссылке из настроек и получите ещё 5 генераций бесплатно.</p>
+<div class="flex gap-14 flex-wrap">
+<a class="btn btn-primary" href="/pro">✨ Перейти на Pro</a>
+<a class="btn btn-ghost" href="/settings">Получить реферальную ссылку</a>
+</div>
+</div>
+
+{% else %}
+
+<div class="panel animate" style="max-width:760px;">
+
+<form method="POST" id="createForm">
+
+<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+<div class="field">
+<label>Тип документа</label>
+
+<div class="type-options mb-16">
+
+<label class="type-option">
+<input type="radio" name="type" value="Резюме" checked>
+<div class="type-option-box">📄 Резюме</div>
+</label>
+
+<label class="type-option">
+<input type="radio" name="type" value="Договор">
+<div class="type-option-box">📑 Договор</div>
+</label>
+
+<label class="type-option">
+<input type="radio" name="type" value="Заявление">
+<div class="type-option-box">📝 Заявление</div>
+</label>
+
+<label class="type-option">
+<input type="radio" name="type" value="Коммерческое предложение">
+<div class="type-option-box">💼 Предложение</div>
+</label>
+
+</div>
+
+</div>
+
+<div class="field">
+<label>Описание</label>
+<textarea class="input" name="description" maxlength="2000" placeholder="Опишите, какой документ нужно создать: для кого, по какому поводу, какие детали важно учесть..." required></textarea>
+<div class="hint">До 2000 символов</div>
+</div>
+
+<button class="btn btn-primary btn-block" type="submit" id="submitBtn">✨ Создать документ</button>
+
+</form>
+
+</div>
+
+{% endif %}
+
+</div>
+
+</div>
+
+<div class="loading-overlay" id="genOverlay">
+<div class="skeleton-box">
+<div class="skeleton-line" style="width:55%"></div>
+<div class="skeleton-line" style="width:92%"></div>
+<div class="skeleton-line" style="width:80%"></div>
+<div class="skeleton-line" style="width:88%"></div>
+<div class="skeleton-line" style="width:65%"></div>
+<p class="mono muted mt-16" style="text-align:center;">DocPilot AI генерирует документ...</p>
+</div>
+</div>
+
+{% endblock %}
+
+{% block scripts %}
+<script>
+var createForm = document.getElementById("createForm");
+
+if (createForm) {
+    createForm.addEventListener("submit", function(){
+        document.getElementById("genOverlay").classList.add("active");
+        setTimeout(function(){
+            var btn = document.getElementById("submitBtn");
+            btn.disabled = true;
+            btn.textContent = "Генерация...";
+        }, 10);
+    });
+}
+</script>
+{% endblock %}

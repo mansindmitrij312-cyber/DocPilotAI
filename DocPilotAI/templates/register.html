@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}Регистрация | DocPilot AI{% endblock %}
+
+{% block body %}
+
+<div class="page">
+
+{% include "_nav.html" %}
+
+<div class="auth-page animate">
+
+<div class="auth-card">
+
+<div class="eyebrow mb-16">Новый аккаунт</div>
+
+<h1>Начнём</h1>
+<p class="auth-sub">Займёт меньше минуты — дальше сразу к документам.</p>
+
+{% if error %}
+<div class="alert alert-error">{{ error }}</div>
+{% endif %}
+
+{% if ref_code %}
+<div class="alert alert-success">🎁 Вас пригласили по реферальной ссылке — после регистрации ваш друг получит бонусные генерации.</div>
+{% endif %}
+
+<form method="POST">
+
+<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+<input type="hidden" name="ref_code" value="{{ ref_code or '' }}">
+
+<div class="field">
+<label>Имя</label>
+<input class="input" type="text" name="username" placeholder="Как к вам обращаться" required autofocus minlength="2">
+</div>
+
+<div class="field">
+<label>Email</label>
+<input class="input" type="email" name="email" placeholder="you@mail.com" required>
+</div>
+
+<div class="field">
+<label>Пароль</label>
+<input class="input" type="password" name="password" placeholder="Минимум 6 символов" required minlength="6">
+</div>
+
+<div class="field">
+<label>Повторите пароль</label>
+<input class="input" type="password" name="password_confirm" placeholder="Ещё раз" required minlength="6">
+</div>
+
+<button class="btn btn-primary btn-block" type="submit">Создать аккаунт</button>
+
+</form>
+
+<div class="auth-bottom">
+<span>Уже есть аккаунт? <a href="/login">Войти</a></span>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}Кабинет | DocPilot AI{% endblock %}
+
+{% block body %}
+
+<div class="page">
+
+{% include "_nav.html" %}
+
+<div class="shell">
+
+<div class="animate mt-40" style="margin-top:50px;margin-bottom:24px;">
+<div class="eyebrow mb-8">Кабинет</div>
+<h1 class="glow-text" style="font-size:42px;">С возвращением, {{ user }}</h1>
+</div>
+
+<div class="panel panel-sm animate mb-24" style="display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;">
+
+<div>
+<div class="eyebrow mb-8">{{ 'Тариф Pro' if usage.is_pro else 'Бесплатный тариф' }}</div>
+{% if usage.is_pro %}
+<p class="muted" style="font-size:14px;">Безлимитные генерации — спасибо, что вы с нами!</p>
+{% else %}
+<p class="muted" style="font-size:14px;">Использовано {{ usage.used }} из {{ usage.limit }} генераций</p>
+{% endif %}
+</div>
+
+{% if not usage.is_pro %}
+<a class="btn btn-primary btn-sm" href="/pro">✨ Перейти на Pro</a>
+{% endif %}
+
+</div>
+
+<div class="grid grid-3 animate">
+
+<div class="card">
+<div class="card-icon">📄</div>
+<h2>Создать документ</h2>
+<p>Резюме, договоры, заявления и коммерческие предложения с помощью AI.</p>
+<a class="btn btn-primary" href="/create">Создать</a>
+</div>
+
+<div class="card">
+<div class="card-icon">🗂</div>
+<h2>Мои документы</h2>
+<p>Все созданные документы хранятся здесь — открывайте и скачивайте в любой момент.</p>
+<a class="btn btn-ghost" href="/documents">Открыть</a>
+</div>
+
+<div class="card">
+<div class="card-icon">⚙️</div>
+<h2>Настройки</h2>
+<p>Имя, пароль и данные аккаунта.</p>
+<a class="btn btn-ghost" href="/settings">Открыть настройки</a>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+{% endblock %}

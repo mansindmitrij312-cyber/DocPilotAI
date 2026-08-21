@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+
+{% block title %}DocPilot AI — документы за секунды{% endblock %}
+
+{% block body %}
+
+<div class="page">
+
+<span class="orb orb-md" style="top:70px;left:3%;animation-delay:.1s;"></span>
+<span class="orb orb-lg" style="top:40px;right:8%;animation-delay:.9s;"></span>
+<span class="orb orb-xs" style="top:230px;left:9%;animation-delay:.4s;"></span>
+<span class="orb orb-xl" style="top:180px;right:2%;animation-delay:1.3s;"></span>
+<span class="orb orb-sm" style="top:340px;left:1%;animation-delay:.6s;"></span>
+<span class="orb orb-lg" style="top:420px;right:11%;animation-delay:1.7s;"></span>
+<span class="orb orb-md" style="top:520px;left:7%;animation-delay:.2s;"></span>
+<span class="orb orb-xs" style="top:480px;right:4%;animation-delay:1.1s;"></span>
+<span class="orb orb-xl" style="top:610px;left:2%;animation-delay:.5s;"></span>
+<span class="orb orb-sm" style="top:690px;right:9%;animation-delay:1.5s;"></span>
+<span class="orb orb-md" style="top:640px;right:1%;animation-delay:.8s;"></span>
+<span class="orb orb-lg" style="top:800px;left:5%;animation-delay:1.9s;"></span>
+<span class="orb orb-xs" style="top:870px;right:6%;animation-delay:.3s;"></span>
+<span class="orb orb-xl" style="top:950px;left:1%;animation-delay:1.2s;"></span>
+<span class="orb orb-sm" style="top:1020px;right:2%;animation-delay:.7s;"></span>
+<span class="orb orb-md" style="top:1080px;left:8%;animation-delay:1.6s;"></span>
+<span class="orb orb-lg" style="top:1160px;right:10%;animation-delay:1.0s;"></span>
+<span class="orb orb-xs" style="top:1230px;left:3%;animation-delay:.15s;"></span>
+<span class="orb orb-md" style="bottom:280px;right:3%;animation-delay:1.4s;"></span>
+<span class="orb orb-xl" style="bottom:190px;left:6%;animation-delay:.55s;"></span>
+<span class="orb orb-sm" style="bottom:120px;right:9%;animation-delay:1.8s;"></span>
+<span class="orb orb-lg" style="bottom:60px;left:2%;animation-delay:.95s;"></span>
+<span class="orb orb-xs" style="bottom:20px;right:12%;animation-delay:1.35s;"></span>
+
+{% include "_nav.html" %}
+
+<div class="shell" style="position:relative;">
+
+<div class="animate" style="max-width:760px;margin:110px auto 0;text-align:center;">
+
+<div class="eyebrow" style="justify-content:center;">AI-генерация документов</div>
+
+<h1 class="glow-text" style="font-size:64px;margin-top:22px;overflow:hidden;">
+<span class="hero-line">Документ, который обычно</span>
+<span class="hero-line">пишут часами — за секунды</span>
+</h1>
+
+<p class="muted" style="font-size:19px;margin-top:22px;line-height:1.6;">
+Опишите, что нужно — резюме, договор, заявление или коммерческое предложение —
+и DocPilot AI сгенерирует готовый текст, который сразу можно скачать в PDF.
+</p>
+
+<div style="margin-top:38px;display:flex;justify-content:center;gap:14px;flex-wrap:wrap;">
+
+{% if user %}
+<a class="btn btn-primary" href="/create">✨ Создать документ</a>
+<a class="btn btn-ghost" href="/documents">Мои документы</a>
+{% else %}
+<a class="btn btn-primary" href="/register">Начать бесплатно</a>
+<a class="btn btn-ghost" href="/login">У меня есть аккаунт</a>
+{% endif %}
+
+</div>
+
+<p class="mono muted mt-24" style="font-size:13px;">
+Уже создано <span data-count="{{ total_count }}" style="color:var(--purple-bright);font-weight:700;">0</span> документов
+</p>
+
+</div>
+
+<div class="grid grid-3 mt-40" style="margin-top:90px;">
+
+<div class="card animate" style="animation-delay:.05s;">
+<div class="card-icon">⚡</div>
+<h2 style="font-size:19px;">Быстро</h2>
+<p>Черновик готов за секунды — не нужно открывать редактор и вспоминать формулировки.</p>
+</div>
+
+<div class="card animate" style="animation-delay:.15s;">
+<div class="card-icon">🧠</div>
+<h2 style="font-size:19px;">Понимает контекст</h2>
+<p>Опишите ситуацию своими словами — AI сам подберёт структуру и тон документа.</p>
+</div>
+
+<div class="card animate" style="animation-delay:.25s;">
+<div class="card-icon">🔒</div>
+<h2 style="font-size:19px;">Хранится у вас</h2>
+<p>Все документы привязаны к вашему аккаунту и доступны в любой момент — скачивайте PDF, когда нужно.</p>
+</div>
+
+</div>
+
+<div class="panel animate mt-40" style="margin-top:60px;margin-bottom:100px;display:flex;align-items:center;justify-content:space-between;gap:30px;flex-wrap:wrap;">
+
+<div>
+<h2 style="font-size:26px;margin-bottom:10px;">Готовы оформить первый документ?</h2>
+<p class="muted">Регистрация занимает меньше минуты.</p>
+</div>
+
+{% if user %}
+<a class="btn btn-primary" href="/create">Создать документ</a>
+{% else %}
+<a class="btn btn-primary" href="/register">Создать аккаунт</a>
+{% endif %}
+
+</div>
+
+</div>
+
+</div>
+
+<div class="site-footer">
+<span class="footer-credit">DocPilot AI © 2026</span>
+</div>
+
+{% endblock %}
