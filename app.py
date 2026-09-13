@@ -221,13 +221,9 @@ app.jinja_env.filters["format_date"] = format_date
 EMAIL_REGEX = re.compile(r"^[^\s@]+@[^\s@]+\.[^\s@]+$")
 
 
-@app.route("/telderieec389dd698372a4a68a66a4904e5e15.txt")
-def telderi_verify():
-    return send_file(
-        os.path.join(os.path.dirname(os.path.abspath(__file__)),
-                     "telderieec389dd698372a4a68a66a4904e5e15.txt"),
-        mimetype="text/plain"
-    )
+@app.route("/")
+def home():
+
     return render_template(
         "index.html",
         user=session.get("user"),
