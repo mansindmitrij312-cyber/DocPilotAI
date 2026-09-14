@@ -13,7 +13,9 @@
 
 **AI-powered document generator** — resumes, contracts, applications, and business proposals, generated locally in seconds. Full auth system, referral program, PDF export, and a dark-neon UI. No external API costs — runs entirely on a local LLM.
 
-🔗 **[Live demo](#)** &nbsp;•&nbsp; 🎥 **[60-sec walkthrough](#)**
+🔗 **[Live demo](https://docpilotai.onrender.com)** &nbsp;•&nbsp; 🎥 **[60-sec walkthrough](#)**
+
+> ⚠️ Free-тариф Render засыпает при простое — первая загрузка может занять до 50 секунд.
 
 ---
 
