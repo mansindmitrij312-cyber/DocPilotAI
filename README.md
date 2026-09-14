@@ -1,7 +1,7 @@
 # DocPilot AI
 
 <p align="center">
-  <img src="static/og-image.svg" alt="DocPilot AI" width="600">
+  <img src="docpilotai-demo.gif" alt="DocPilot AI Demo" width="600">
 </p>
 
 <p align="center">
