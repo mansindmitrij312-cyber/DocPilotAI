@@ -1,0 +1,7 @@
+flask
+flask-wtf
+flask-limiter
+reportlab
+python-dotenv
+gunicorn
+ollama
